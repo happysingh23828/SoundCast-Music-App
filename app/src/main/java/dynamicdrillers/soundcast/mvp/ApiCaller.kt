@@ -1,9 +1,8 @@
-package dynamicdrillers.soundcast.network
+package dynamicdrillers.soundcast.mvp
 
 import dynamicdrillers.soundcast.model.Songs
-import io.reactivex.Observable
+import dynamicdrillers.soundcast.network.ApiInterface
 import io.reactivex.Observer
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -47,7 +46,7 @@ class ApiCaller : ApiWrapper {
     }
 
 
-    private fun retrofitBuilder() : ApiInterface{
+    private fun retrofitBuilder() : ApiInterface {
 
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)

@@ -2,8 +2,8 @@ package dynamicdrillers.soundcast.activities
 
 import dynamicdrillers.soundcast.model.Songs
 import dynamicdrillers.soundcast.mvp.Contract
-import dynamicdrillers.soundcast.network.ApiCaller
-import dynamicdrillers.soundcast.network.ApiWrapper
+import dynamicdrillers.soundcast.mvp.ApiCaller
+import dynamicdrillers.soundcast.mvp.ApiWrapper
 
 class SongsActivityPresenter(private val view : Contract.SongsActivityView) : Contract.SongsActivityPresenter {
 

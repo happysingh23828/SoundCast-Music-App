@@ -1,4 +1,4 @@
-package dynamicdrillers.soundcast.network
+package dynamicdrillers.soundcast.mvp
 
 import dynamicdrillers.soundcast.model.Songs
 

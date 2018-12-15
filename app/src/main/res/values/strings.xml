@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SoundCast</string>
+    <string name="soundCast">SoundCast</string>
+    <string name="created_at">Created at : </string>
 </resources>

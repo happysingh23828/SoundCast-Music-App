@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".activities.SongListActivity"
-        >
+>
 
     <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -32,8 +32,20 @@
     <android.support.v7.widget.RecyclerView
             android:id="@+id/songs_list_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="9">
 
     </android.support.v7.widget.RecyclerView>
+
+    <Button
+            android:id="@+id/add_music"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/add_music"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textStyle="normal"
+    />
 
 </LinearLayout>

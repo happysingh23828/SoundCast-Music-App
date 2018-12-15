@@ -20,6 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {
@@ -43,6 +47,7 @@ dependencies {
 
     //UI
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.kaopiz:kprogresshud:1.2.0'
 
     //Dagger
     implementation 'com.android.support:support-annotations:28.0.0'

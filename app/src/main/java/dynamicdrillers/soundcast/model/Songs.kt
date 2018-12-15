@@ -1,12 +1,15 @@
 package dynamicdrillers.soundcast.model
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 data class Songs(
     @SerializedName("results")
-    val results: List<Result> = listOf()
-)
+    val results: ArrayList<Result> = ArrayList()
+) : Parcelable
 
+@Parcelize
 data class Result(
     @SerializedName("ACL")
     val aCL: ACL = ACL(),
@@ -26,29 +29,33 @@ data class Result(
     val title: String = "",
     @SerializedName("updatedAt")
     val updatedAt: String = ""
-)
+) : Parcelable
 
+@Parcelize
 data class ACL(
     @SerializedName("*")
     val x: X = X(),
     @SerializedName("Dft58Zy6Dv")
     val dft58Zy6Dv: Dft58Zy6Dv = Dft58Zy6Dv()
-)
+) : Parcelable
 
+@Parcelize
 data class X(
     @SerializedName("read")
     val read: Boolean = false,
     @SerializedName("write")
     val write: Boolean = false
-)
+) : Parcelable
 
+@Parcelize
 data class Dft58Zy6Dv(
     @SerializedName("read")
     val read: Boolean = false,
     @SerializedName("write")
     val write: Boolean = false
-)
+) : Parcelable
 
+@Parcelize
 data class MusicFile(
     @SerializedName("__type")
     val type: String = "",
@@ -56,8 +63,9 @@ data class MusicFile(
     val name: String = "",
     @SerializedName("url")
     val url: String = ""
-)
+) : Parcelable
 
+@Parcelize
 data class ThumbnailFile(
     @SerializedName("__type")
     val type: String = "",
@@ -65,4 +73,4 @@ data class ThumbnailFile(
     val name: String = "",
     @SerializedName("url")
     val url: String = ""
-)
+) : Parcelable

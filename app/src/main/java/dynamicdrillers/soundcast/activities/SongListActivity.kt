@@ -19,7 +19,14 @@ class SongListActivity : AppCompatActivity(),Contract.SongsActivityView {
         setContentView(R.layout.activity_song_list)
         setPresenter(SongsActivityPresenter(this))
         init()
+        onClicks()
         songsActivityPresenter.getSongsList()
+    }
+
+    private fun onClicks() {
+        add_music.setOnClickListener {
+
+        }
     }
 
     private fun init() {

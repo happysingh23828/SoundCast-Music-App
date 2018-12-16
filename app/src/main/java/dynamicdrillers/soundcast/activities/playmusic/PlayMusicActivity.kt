@@ -1,6 +1,7 @@
 package dynamicdrillers.soundcast.activities.playmusic
 
 import android.database.Observable
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -79,6 +80,7 @@ class PlayMusicActivity : AppCompatActivity() {
     private fun init() {
         handler = Handler()
         mediaPlayer = MediaPlayer()
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
         progressDialog = KProgressHUD(this)
         progressDialog.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setLabel("PLease Wait").
             setCancellable(false).setDetailsLabel("Loading Song...").setAnimationSpeed(2).setDimAmount(0.5f)
@@ -87,7 +89,6 @@ class PlayMusicActivity : AppCompatActivity() {
     private fun onCLicks() {
         play_or_pause.setOnClickListener {
             if (isPlaying) stopMusic() else{
-                progressDialog.show()
                 prepareSong()
                 playMusic()
             }
@@ -96,6 +97,7 @@ class PlayMusicActivity : AppCompatActivity() {
             if(currentPlayingIndex!=0){
                 currentPlayingIndex -= 1
                 mediaPlayer.reset()
+                setContentToScreen(songsList[currentPlayingIndex])
                 prepareSong()
                 playMusic()
             }
@@ -105,6 +107,7 @@ class PlayMusicActivity : AppCompatActivity() {
             if(currentPlayingIndex+1<songsList.size-1){
                 currentPlayingIndex += 1
                 mediaPlayer.reset()
+                setContentToScreen(songsList[currentPlayingIndex])
                 prepareSong()
                 playMusic()
             }
@@ -156,7 +159,6 @@ class PlayMusicActivity : AppCompatActivity() {
             mediaPlayer.setDataSource(songsList[currentPlayingIndex].musicFile.url)
             mediaPlayer.prepare()
         } catch (e: Exception) {
-            progressDialog.dismiss()
         }
         songFullDuration = mediaPlayer.duration
     }

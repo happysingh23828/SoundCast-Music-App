@@ -33,6 +33,7 @@ class SongsListAdapter(private var songsList : ArrayList<Result>, var context : 
         fun bind(result : Result,position: Int){
             view.title.text = result.title
             view.createdAt.text = context.getString(R.string.created_at).plus(result.createdAt.removeRange(9,result.createdAt.length-1))
+            if(result.thumbnailFile.url!="")
             Picasso.get().load(result.thumbnailFile.url).into(view.thumbnail)
             onClicks(position)
         }

@@ -17,6 +17,7 @@ import android.widget.Toast
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.parse.ParseFile
 import com.parse.ParseObject
+import com.parse.SaveCallback
 import dynamicdrillers.soundcast.R
 import kotlinx.android.synthetic.main.activity_add_music.*
 import java.io.*
@@ -24,11 +25,11 @@ import java.io.*
 
 class AddMusicActivity : AppCompatActivity() {
 
-    var imageFileName : String = ""
-    var audioFileName : String = ""
-    var imageBytes : ByteArray? = null
-    var audioBytes : ByteArray? = null
-    lateinit var progressDialog : KProgressHUD
+    var imageFileName: String = ""
+    var audioFileName: String = ""
+    var imageBytes: ByteArray? = null
+    var audioBytes: ByteArray? = null
+    lateinit var progressDialog: KProgressHUD
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +41,8 @@ class AddMusicActivity : AppCompatActivity() {
 
     private fun init() {
         progressDialog = KProgressHUD(this)
-        progressDialog.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setLabel("Wait").
-            setCancellable(false).setDetailsLabel("Uploading.....").setAnimationSpeed(2).setDimAmount(0.5f)
+        progressDialog.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setLabel("Wait").setCancellable(false)
+            .setDetailsLabel("Uploading.....").setAnimationSpeed(2).setDimAmount(0.5f)
     }
 
     private fun onClicks() {
@@ -144,22 +145,45 @@ class AddMusicActivity : AppCompatActivity() {
     private fun uploadFileToServer() {
         progressDialog.show()
         val entity = ParseObject("songs_library")
-
-        entity.put("title",name.text.toString())
+        entity.put("title", name.text.toString())
         entity.put("link", "Dummy Link")
         entity.put("thumbnail", imageFileName)
-        entity.put("music_file", ParseFile(audioFileName, audioBytes))
-        entity.put("thumbnail_file", ParseFile(imageFileName, imageBytes))
+        entity.put("music_file", ParseFile(audioFileName.replace(" ", ""), audioBytes))
+        entity.put("thumbnail_file", ParseFile(imageFileName.replace(" ", ""), imageBytes))
 
-        // Saves the new object.
-        // Notice that the SaveCallback is totally optional!
-        entity.saveInBackground {
-            if(it!=null){
-                progressDialog.dismiss()
-                Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()
+        val audioFile = ParseFile(audioFileName, audioBytes)
+        val thumbFile = ParseFile(imageFileName, imageBytes)
+
+        audioFile.saveInBackground(SaveCallback { it ->
+            if (it == null) {
+                thumbFile.saveInBackground(SaveCallback { it1 ->
+                    if (it1 == null) {
+                        entity.saveInBackground {
+                            if (it == null) {
+                                Toast.makeText(this, "Uploaded Successfully", Toast.LENGTH_SHORT).show()
+                                finish()
+                            } else {
+                                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, it1.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } else {
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
-        }
+        })
+
     }
+
+
+    fun getValidFileName(name : String) : String {
+        val invalidChars = Regex("[^A-Za-z0-9 ]")
+        return name.replace(invalidChars,"")
+    }
+
+
 
 
     private fun openGalleryForAudio() {
@@ -241,10 +265,12 @@ class AddMusicActivity : AppCompatActivity() {
                 result = result.substring(cut + 1)
             }
         }
-        return result
+
+
+        return getValidFileName(result)
     }
 
-    fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+    fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
     companion object {
         const val PICK_AUDIO_REQUEST = 102

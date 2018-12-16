@@ -56,4 +56,10 @@ class SongListActivity : AppCompatActivity(),Contract.SongsActivityView {
     override fun setPresenter(presenter: Contract.SongsActivityPresenter) {
             this.songsActivityPresenter = presenter
     }
+
+    override fun onResume() {
+        super.onResume()
+        progressDialog.show()
+        songsActivityPresenter.getSongsList()
+    }
 }

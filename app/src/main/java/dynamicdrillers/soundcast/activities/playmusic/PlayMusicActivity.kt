@@ -25,7 +25,7 @@ class PlayMusicActivity : AppCompatActivity() {
     lateinit var mediaPlayer: MediaPlayer
     private lateinit var handler: Handler
     private var songFullDuration = 0
-    lateinit var progressDialog : KProgressHUD
+    lateinit var progressDialog: KProgressHUD
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play_music)
@@ -43,7 +43,7 @@ class PlayMusicActivity : AppCompatActivity() {
 
         mediaPlayer.setOnPreparedListener {
             progressDialog.dismiss()
-            seekbar.max = it.duration-1000
+            seekbar.max = it.duration - 1000
         }
 
         mediaPlayer.setOnBufferingUpdateListener { mp, percent ->
@@ -82,19 +82,19 @@ class PlayMusicActivity : AppCompatActivity() {
         mediaPlayer = MediaPlayer()
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
         progressDialog = KProgressHUD(this)
-        progressDialog.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setLabel("PLease Wait").
-            setCancellable(false).setDetailsLabel("Loading Song...").setAnimationSpeed(2).setDimAmount(0.5f)
+        progressDialog.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE).setLabel("PLease Wait").setCancellable(false)
+            .setDetailsLabel("Loading Song...").setAnimationSpeed(2).setDimAmount(0.5f)
     }
 
     private fun onCLicks() {
         play_or_pause.setOnClickListener {
-            if (isPlaying) stopMusic() else{
+            if (isPlaying) stopMusic() else {
                 prepareSong()
                 playMusic()
             }
         }
         previous_play.setOnClickListener {
-            if(currentPlayingIndex!=0){
+            if (currentPlayingIndex != 0) {
                 currentPlayingIndex -= 1
                 mediaPlayer.reset()
                 setContentToScreen(songsList[currentPlayingIndex])
@@ -104,7 +104,7 @@ class PlayMusicActivity : AppCompatActivity() {
         }
 
         next_play.setOnClickListener {
-            if(currentPlayingIndex+1<songsList.size-1){
+            if (currentPlayingIndex + 1 < songsList.size - 1) {
                 currentPlayingIndex += 1
                 mediaPlayer.reset()
                 setContentToScreen(songsList[currentPlayingIndex])
@@ -156,8 +156,10 @@ class PlayMusicActivity : AppCompatActivity() {
 
     private fun prepareSong() {
         try {
-            mediaPlayer.setDataSource(songsList[currentPlayingIndex].musicFile.url)
-            mediaPlayer.prepare()
+            if ((songsList[currentPlayingIndex].title != "A string") && songsList[currentPlayingIndex].musicFile.url.isNotEmpty() ) {
+                mediaPlayer.setDataSource(songsList[currentPlayingIndex].musicFile.url)
+                mediaPlayer.prepare()
+            }
         } catch (e: Exception) {
         }
         songFullDuration = mediaPlayer.duration

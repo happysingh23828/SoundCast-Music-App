@@ -81,20 +81,23 @@ class AddMusicActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            PICK_PHOTO_REQUEST -> {
-                imageFileName = getFileName(data!!.data!!)
-                image_file.text = imageFileName.toEditable()
-                imageBytes = convertImageToByte(data.data!!)
-                thumbnail_selected.setImageBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes!!.size))
-            }
-            PICK_AUDIO_REQUEST -> {
-                audioFileName = getFileName(data!!.data!!)
-                music_file.text = audioFileName.toEditable()
+        data?.let {
+            when (requestCode) {
+                PICK_PHOTO_REQUEST -> {
+                    imageFileName = getFileName(data!!.data!!)
+                    image_file.text = imageFileName.toEditable()
+                    imageBytes = convertImageToByte(data.data!!)
+                    thumbnail_selected.setImageBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes!!.size))
+                }
+                PICK_AUDIO_REQUEST -> {
+                    audioFileName = getFileName(data!!.data!!)
+                    music_file.text = audioFileName.toEditable()
 
-                audioBytes = convertStreamToByteArray(contentResolver.openInputStream(data.data!!)!!)
+                    audioBytes = convertStreamToByteArray(contentResolver.openInputStream(data.data!!)!!)
+                }
             }
         }
+
     }
 
     private fun convertImageToByte(uri: Uri): ByteArray? {
